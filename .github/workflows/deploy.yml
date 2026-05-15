@@ -4,9 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - 'xtreme-website/**'   # solo dispara si cambió algo en el frontend
+      - 'xtreme-website/**'
 
-  workflow_dispatch:          # permite lanzarlo manualmente desde GitHub UI
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -14,11 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ── 1. Código ────────────────────────────────────────────────────────────
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ── 2. Node.js con caché de dependencias ─────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,25 +24,21 @@ jobs:
           cache: 'npm'
           cache-dependency-path: xtreme-website/package-lock.json
 
-      # ── 3. Instalar dependencias (reproducible) ───────────────────────────────
       - name: Install dependencies
         working-directory: xtreme-website
         run: npm ci --prefer-offline
 
-      # ── 4. Build de producción ───────────────────────────────────────────────
       - name: Build production
         working-directory: xtreme-website
         run: npm run build:prod
 
-      # ── 5. Configurar SSH ────────────────────────────────────────────────────
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.VDS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${{ secrets.VDS_PORT }} -H ${{ secrets.VDS_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.VDS_PORT }} ${{ secrets.VDS_HOST }} >> ~/.ssh/known_hosts
 
-      # ── 6. Deploy via rsync ──────────────────────────────────────────────────
       - name: Deploy via rsync
         run: |
           rsync -az --delete \
@@ -52,14 +46,13 @@ jobs:
             xtreme-website/dist/xtreme-website/browser/ \
             ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:${{ secrets.VDS_PATH }}/
 
-      # ── 7. Verificar que el sitio responde ───────────────────────────────────
       - name: Smoke test
         run: |
           sleep 3
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.VDS_HOST }})
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
-            echo "Smoke test failed — unexpected status $STATUS"
+            echo "Smoke test failed — status $STATUS"
             exit 1
           fi
           echo "Deploy OK"
