@@ -32,7 +32,7 @@
 
   <!-- Stats -->
   <section class="stats">
-    @for (stat of stats(); track stat.label) {
+    @for (stat of stats; track stat.label) {
       <div class="stat-card">
         <mat-icon class="stat-card__icon">{{ stat.icon }}</mat-icon>
         <span class="stat-card__value">{{ stat.value }}</span>
@@ -47,54 +47,36 @@
     <section class="section">
       <div class="section__header">
         <h2 class="section__title">Servidores</h2>
-        @if (!serverService.loading()) {
-          <span class="section__badge section__badge--online">{{ onlineServers() }} en línea</span>
-        }
+        <span class="section__badge section__badge--online">{{ servers.length }} en línea</span>
       </div>
-
-      @if (serverService.loading()) {
-        <div class="servers-loading">
-          <mat-spinner diameter="32" />
-          <span>Consultando servidores...</span>
-        </div>
-      } @else {
-        <div class="servers">
-          @for (server of serverService.servers(); track server.id) {
-            <div class="server-card" [class.server-card--online]="server.online">
-              <div class="server-card__header">
-                <span class="server-card__dot" [class.server-card__dot--online]="server.online"></span>
-                <span class="server-card__name">{{ server.name }}</span>
-                <span class="server-card__status">{{ server.online ? 'En línea' : 'Offline' }}</span>
+      <div class="servers">
+        @for (server of servers; track server.name) {
+          <div class="server-card" [class.server-card--online]="server.online">
+            <div class="server-card__header">
+              <span class="server-card__dot" [class.server-card__dot--online]="server.online"></span>
+              <span class="server-card__name">{{ server.name }}</span>
+              <span class="server-card__status">{{ server.online ? 'En línea' : 'Offline' }}</span>
+            </div>
+            <div class="server-card__info">
+              <div class="server-card__row">
+                <mat-icon>map</mat-icon>
+                <span>{{ server.map }}</span>
               </div>
-              @if (server.online) {
-                <div class="server-card__info">
-                  <div class="server-card__row">
-                    <mat-icon>map</mat-icon>
-                    <span>{{ server.map }}</span>
-                  </div>
-                  <div class="server-card__row">
-                    <mat-icon>group</mat-icon>
-                    <span>{{ server.players }} / {{ server.maxPlayers }} jugadores</span>
-                  </div>
-                  <div class="server-card__row">
-                    <mat-icon>network_ping</mat-icon>
-                    <span>{{ server.ping }} ms</span>
-                  </div>
-                </div>
-                <div class="server-card__bar">
-                  <div class="server-card__bar-fill" [style.width.%]="(server.players / server.maxPlayers) * 100"></div>
-                </div>
-              } @else {
-                <p class="server-card__offline-msg">Servidor no disponible</p>
-              }
-              <div class="server-card__ip">
-                <mat-icon>dns</mat-icon>
-                <code>{{ server.ip }}</code>
+              <div class="server-card__row">
+                <mat-icon>group</mat-icon>
+                <span>{{ server.players }} / {{ server.maxPlayers }} jugadores</span>
               </div>
             </div>
-          }
-        </div>
-      }
+            <div class="server-card__bar">
+              <div class="server-card__bar-fill" [style.width.%]="(server.players / server.maxPlayers) * 100"></div>
+            </div>
+            <div class="server-card__ip">
+              <mat-icon>dns</mat-icon>
+              <code>{{ server.ip }}</code>
+            </div>
+          </div>
+        }
+      </div>
     </section>
 
     <!-- Recent threads -->

@@ -1,11 +1,21 @@
-// ─── Brand & status colors — compile-time SCSS variables ──────────────────────
-// These are the same in both themes; safe to use in rgba(), darken(), etc.
+// ─── L4D2 Color Palette ───────────────────────────────────────────────────────
+$color-bg:            #080808;
+$color-surface:       #111111;
+$color-surface-2:     #1a1a1a;
+$color-surface-3:     #252525;
+$color-border:        #2a2a2a;
+$color-border-light:  #383838;
+
 $color-primary:       #c0392b;
 $color-primary-dark:  #8b0000;
 $color-primary-light: #e74c3c;
 
 $color-accent:        #4a7c4e;
 $color-accent-light:  #5aad5f;
+
+$color-text:          #e8e8e8;
+$color-text-muted:    #888888;
+$color-text-dim:      #555555;
 
 $color-success:       #27ae60;
 $color-warning:       #f39c12;
@@ -20,66 +30,10 @@ $role-vip:        #f39c12;
 $role-moderator:  #27ae60;
 $role-admin:      #c0392b;
 
-// ─── Structural colors — CSS custom properties (runtime, theme-switchable) ────
-// Changing these at :root / html.theme-light propagates to every component
-// that uses the SCSS vars below, with zero component-level changes.
-:root {
-  // Dark theme defaults
-  --xt-bg:           #080808;
-  --xt-surface:      #111111;
-  --xt-surface-2:    #1a1a1a;
-  --xt-surface-3:    #252525;
-  --xt-border:       #2a2a2a;
-  --xt-border-light: #383838;
-  --xt-text:         #e8e8e8;
-  --xt-text-muted:   #888888;
-  --xt-text-dim:     #555555;
-
-  --xt-shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.50);
-  --xt-shadow-md:  0 4px 12px rgba(0, 0, 0, 0.60);
-  --xt-shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.70);
-  --xt-shadow-red: 0 0 20px rgba(192, 57, 43, 0.30);
-}
-
-html.theme-light {
-  --xt-bg:           #f0f0f0;
-  --xt-surface:      #ffffff;
-  --xt-surface-2:    #f5f5f5;
-  --xt-surface-3:    #ebebeb;
-  --xt-border:       #d4d4d4;
-  --xt-border-light: #b8b8b8;
-  --xt-text:         #111111;
-  --xt-text-muted:   #555555;
-  --xt-text-dim:     #999999;
-
-  --xt-shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.08);
-  --xt-shadow-md:  0 4px 12px rgba(0, 0, 0, 0.12);
-  --xt-shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.16);
-  --xt-shadow-red: 0 0 20px rgba(192, 57, 43, 0.20);
-}
-
-// ─── SCSS variables → CSS custom property bridge ──────────────────────────────
-// v.$color-bg compiles to: var(--xt-bg)   — works everywhere except SCSS
-// color functions (rgba, darken…). Use brand vars above for those.
-$color-bg:           var(--xt-bg);
-$color-surface:      var(--xt-surface);
-$color-surface-2:    var(--xt-surface-2);
-$color-surface-3:    var(--xt-surface-3);
-$color-border:       var(--xt-border);
-$color-border-light: var(--xt-border-light);
-$color-text:         var(--xt-text);
-$color-text-muted:   var(--xt-text-muted);
-$color-text-dim:     var(--xt-text-dim);
-
-$shadow-sm:  var(--xt-shadow-sm);
-$shadow-md:  var(--xt-shadow-md);
-$shadow-lg:  var(--xt-shadow-lg);
-$shadow-red: var(--xt-shadow-red);
-
 // ─── Layout ───────────────────────────────────────────────────────────────────
-$navbar-height:           64px;
-$sidebar-width:           260px;
-$sidebar-width-collapsed: 64px;
+$navbar-height:             64px;
+$sidebar-width:             260px;
+$sidebar-width-collapsed:   64px;
 
 // ─── Spacing ──────────────────────────────────────────────────────────────────
 $spacing-xs:  4px;
@@ -102,3 +56,9 @@ $bp-tablet:  1023px;
 $transition-fast: 150ms ease;
 $transition-base: 250ms ease;
 $transition-slow: 400ms ease;
+
+// ─── Shadows ──────────────────────────────────────────────────────────────────
+$shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.5);
+$shadow-md:  0 4px 12px rgba(0, 0, 0, 0.6);
+$shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.7);
+$shadow-red: 0 0 20px rgba(192, 57, 43, 0.3);

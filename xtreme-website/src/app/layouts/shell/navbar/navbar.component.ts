@@ -5,9 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../../core/services/auth.service';
-import { ThemeService } from '../../../core/services/theme.service';
 import { UserAvatarComponent } from '../../../shared/components/user-avatar/user-avatar.component';
 import { RoleBadgeComponent } from '../../../shared/components/role-badge/role-badge.component';
 
@@ -22,7 +20,6 @@ import { RoleBadgeComponent } from '../../../shared/components/role-badge/role-b
     MatIconModule,
     MatMenuModule,
     MatDividerModule,
-    MatTooltipModule,
     UserAvatarComponent,
     RoleBadgeComponent,
   ],
@@ -33,5 +30,4 @@ export class NavbarComponent {
   menuToggle = output<void>();
 
   protected auth = inject(AuthService);
-  protected theme = inject(ThemeService);
 }

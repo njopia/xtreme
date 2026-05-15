@@ -4,8 +4,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ForumService } from '../../../core/services/forum.service';
-import { ServerService } from '../../../core/services/server.service';
 import { ForumCategory } from '../../../core/models/forum.model';
+
+interface ServerStatus {
+  name: string;
+  map: string;
+  players: number;
+  maxPlayers: number;
+  online: boolean;
+}
+
+const MOCK_SERVERS: ServerStatus[] = [
+  { name: 'Servidor 1', map: 'Dead Center', players: 7, maxPlayers: 8, online: true },
+  { name: 'Servidor 2', map: 'Blood Harvest', players: 3, maxPlayers: 8, online: true },
+];
 
 @Component({
   selector: 'app-sidebar',
@@ -19,7 +31,7 @@ export class SidebarComponent implements OnInit {
   isCollapsed = input(false);
   collapseToggle = output<void>();
 
-  protected serverService = inject(ServerService);
+  protected servers = MOCK_SERVERS;
   protected categories = signal<ForumCategory[]>([]);
 
   private forumService = inject(ForumService);

@@ -117,13 +117,6 @@
 
   .spacer { flex: 1; }
 
-  &__theme-btn {
-    color: v.$color-text-muted;
-    transition: color v.$transition-fast;
-
-    &:hover { color: v.$color-text; }
-  }
-
   &__icon-btn {
     color: v.$color-text-muted;
 

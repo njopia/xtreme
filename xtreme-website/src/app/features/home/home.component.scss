@@ -292,15 +292,6 @@
 }
 
 // ─── Servers ──────────────────────────────────────────────────────────────────
-.servers-loading {
-  display: flex;
-  align-items: center;
-  gap: v.$spacing-md;
-  padding: v.$spacing-xl;
-  color: v.$color-text-muted;
-  font-size: 0.9rem;
-}
-
 .servers { display: flex; flex-direction: column; gap: v.$spacing-md; }
 
 .server-card {
@@ -363,13 +354,6 @@
     background: linear-gradient(90deg, v.$color-accent, v.$color-accent-light);
     border-radius: 2px;
     transition: width v.$transition-slow;
-  }
-
-  &__offline-msg {
-    font-size: 0.85rem;
-    color: v.$color-text-dim;
-    padding: v.$spacing-sm 0;
-    font-style: italic;
   }
 
   &__ip {
