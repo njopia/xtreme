@@ -6,7 +6,6 @@ on:
     paths:
       - 'xtreme-website/**'
       - 'api/**'
-
   workflow_dispatch:
 
 jobs:
@@ -33,6 +32,13 @@ jobs:
         working-directory: xtreme-website
         run: npm run build:prod
 
+      - name: Debug - List Build Files
+        run: |
+          echo "--- Contenido del build del Frontend ---"
+          ls -R xtreme-website/dist/xtreme-website/browser/ | head -n 20
+          echo "--- Contenido de la carpeta API ---"
+          ls -R api/ | head -n 20
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
@@ -42,33 +48,56 @@ jobs:
 
       - name: Deploy frontend via rsync
         run: |
-          rsync -az --delete \
+          TARGET_PATH="/var/www/html/xtreme-website"
+          # Agregamos -v (verbose) para ver archivo por archivo en el log
+          rsync -azv --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             xtreme-website/dist/xtreme-website/browser/ \
-            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:${{ secrets.VDS_PATH }}/
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:$TARGET_PATH/
 
       - name: Deploy API via rsync
         run: |
-          rsync -az --delete \
+          TARGET_API_PATH="/var/www/html/api"
+          
+          if [ -z "$TARGET_API_PATH" ] || [ "$TARGET_API_PATH" == "/" ]; then
+            echo "CRITICAL ERROR: Destino no válido detectado ($TARGET_API_PATH). Abortando para proteger el OS."
+            exit 1
+          fi
+
+          # Agregamos -i (itemize-changes) para ver exactamente qué cambia (borrados, nuevos, etc)
+          rsync -azvi --delete \
             --exclude='.env' \
             --exclude='node_modules' \
+            --exclude='/proc' \
+            --exclude='/sys' \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             api/ \
-            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:${{ secrets.VDS_API_PATH }}/
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:$TARGET_API_PATH/
+
+      - name: Debug - Remote Check
+        run: |
+          echo "Verificando carpetas en el servidor remoto tras el deploy..."
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} \
+            "ls -ld /var/www/html/api /var/www/html/xtreme-website && du -sh /var/www/html/api"
 
       - name: Install API deps & restart
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
             ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} \
-            "cd ${{ secrets.VDS_API_PATH }} && npm ci --omit=dev && pm2 restart xtreme-api || pm2 start ecosystem.config.cjs"
+            "cd /var/www/html/api && npm ci --omit=dev && pm2 restart xtreme-api || pm2 start ecosystem.config.cjs"
 
       - name: Smoke test
         run: |
-          sleep 3
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.VDS_HOST }})
-          echo "HTTP status: $STATUS"
-          if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
-            echo "Smoke test failed — status $STATUS"
+          sleep 5
+          # Agregamos -v al curl para ver los headers de respuesta en el debug
+          STATUS=$(curl -sv -o /dev/null -w "%{http_code}" http://${{ secrets.VDS_HOST }} 2>&1 | grep "< HTTP" | tail -n 1)
+          echo "HTTP debug info: $STATUS"
+          
+          # Extracción limpia del código para la lógica
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.VDS_HOST }})
+          if [ "$CODE" != "200" ] && [ "$CODE" != "301" ] && [ "$CODE" != "302" ]; then
+            echo "Smoke test failed — status $CODE"
             exit 1
           fi
-          echo "Deploy OK"
+          echo "Deploy exitoso en Debian 13"
