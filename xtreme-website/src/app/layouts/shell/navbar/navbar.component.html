@@ -25,6 +25,12 @@
 
   <span class="spacer"></span>
 
+  <button mat-icon-button class="navbar__theme-btn"
+          (click)="theme.toggle()"
+          [matTooltip]="theme.theme() === 'dark' ? 'Tema claro' : 'Tema oscuro'">
+    <mat-icon>{{ theme.theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+
   @if (auth.currentUser(); as user) {
     <button mat-icon-button class="navbar__icon-btn" aria-label="Notificaciones">
       <mat-icon>notifications</mat-icon>
