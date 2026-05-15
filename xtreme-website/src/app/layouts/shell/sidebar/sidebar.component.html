@@ -6,7 +6,7 @@
       <mat-icon>sports_esports</mat-icon>
       @if (!isCollapsed()) { <span>Servidores</span> }
     </div>
-    @for (server of servers; track server.name) {
+    @for (server of (serverService.servers() ?? []); track server.id) {
       <div class="sidebar__server"
            [matTooltip]="isCollapsed() ? server.name + ' · ' + server.players + '/' + server.maxPlayers : ''"
            matTooltipPosition="right">
@@ -14,9 +14,11 @@
         @if (!isCollapsed()) {
           <div class="sidebar__server-info">
             <span class="sidebar__server-name">{{ server.name }}</span>
-            <span class="sidebar__server-map">{{ server.map }}</span>
+            <span class="sidebar__server-map">{{ server.online ? server.map : 'Offline' }}</span>
           </div>
-          <span class="sidebar__server-count">{{ server.players }}/{{ server.maxPlayers }}</span>
+          @if (server.online) {
+            <span class="sidebar__server-count">{{ server.players }}/{{ server.maxPlayers }}</span>
+          }
         }
       </div>
     }
