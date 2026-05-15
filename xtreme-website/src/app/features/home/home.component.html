@@ -1,0 +1,110 @@
+<div class="home">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Comunidad de Left 4 Dead 2</p>
+      <h1 class="hero__title">XTREME<br /><span class="hero__title--red">L4D2</span></h1>
+      <p class="hero__description">
+        Servidores privados competitivos, foros y comunidad activa para los supervivientes más duros.
+      </p>
+      <div class="hero__actions">
+        @if (!auth.isAuthenticated()) {
+          <a mat-raised-button routerLink="/auth/register" class="hero__btn-primary">
+            <mat-icon>person_add</mat-icon>
+            Unirse ahora
+          </a>
+        }
+        <a mat-stroked-button routerLink="/forums" class="hero__btn-secondary">
+          <mat-icon>forum</mat-icon>
+          Ver foros
+        </a>
+      </div>
+    </div>
+    <div class="hero__illustration">
+      <img src="/assets/survivor.svg" alt="Survivor" class="hero__survivor" aria-hidden="true" />
+    </div>
+    <div class="hero__scroll-indicator">
+      <mat-icon>expand_more</mat-icon>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    @for (stat of stats; track stat.label) {
+      <div class="stat-card">
+        <mat-icon class="stat-card__icon">{{ stat.icon }}</mat-icon>
+        <span class="stat-card__value">{{ stat.value }}</span>
+        <span class="stat-card__label">{{ stat.label }}</span>
+      </div>
+    }
+  </section>
+
+  <div class="home__grid">
+
+    <!-- Servers -->
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Servidores</h2>
+        <span class="section__badge section__badge--online">{{ servers.length }} en línea</span>
+      </div>
+      <div class="servers">
+        @for (server of servers; track server.name) {
+          <div class="server-card" [class.server-card--online]="server.online">
+            <div class="server-card__header">
+              <span class="server-card__dot" [class.server-card__dot--online]="server.online"></span>
+              <span class="server-card__name">{{ server.name }}</span>
+              <span class="server-card__status">{{ server.online ? 'En línea' : 'Offline' }}</span>
+            </div>
+            <div class="server-card__info">
+              <div class="server-card__row">
+                <mat-icon>map</mat-icon>
+                <span>{{ server.map }}</span>
+              </div>
+              <div class="server-card__row">
+                <mat-icon>group</mat-icon>
+                <span>{{ server.players }} / {{ server.maxPlayers }} jugadores</span>
+              </div>
+            </div>
+            <div class="server-card__bar">
+              <div class="server-card__bar-fill" [style.width.%]="(server.players / server.maxPlayers) * 100"></div>
+            </div>
+            <div class="server-card__ip">
+              <mat-icon>dns</mat-icon>
+              <code>{{ server.ip }}</code>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Recent threads -->
+    <section class="section">
+      <div class="section__header">
+        <h2 class="section__title">Últimas discusiones</h2>
+        <a routerLink="/forums" class="section__link">Ver todos</a>
+      </div>
+      <div class="threads">
+        @for (thread of recentThreads(); track thread.id) {
+          <a [routerLink]="['/forums', thread.categoryId, thread.id]" class="thread-card">
+            <div class="thread-card__meta">
+              <app-role-badge [role]="thread.authorRole" />
+              <span class="thread-card__author">{{ thread.authorUsername }}</span>
+              <span class="thread-card__time">{{ timeAgo(thread.createdAt) }}</span>
+            </div>
+            <h3 class="thread-card__title">
+              @if (thread.isPinned) { <mat-icon class="thread-card__pin">push_pin</mat-icon> }
+              {{ thread.title }}
+            </h3>
+            <div class="thread-card__stats">
+              <span><mat-icon>chat_bubble_outline</mat-icon> {{ thread.replyCount }}</span>
+              <span><mat-icon>visibility</mat-icon> {{ thread.viewCount }}</span>
+            </div>
+          </a>
+        }
+      </div>
+    </section>
+
+  </div>
+</div>

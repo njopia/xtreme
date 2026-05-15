@@ -1,0 +1,232 @@
+@use '../../../../styles/variables' as v;
+
+.forum-thread {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: v.$spacing-xl;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    padding: v.$spacing-md;
+  }
+
+  &__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.83rem;
+    color: v.$color-text-muted;
+    margin-bottom: v.$spacing-lg;
+
+    a { color: v.$color-primary-light; text-decoration: none; &:hover { text-decoration: underline; } }
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+
+  &__title-row {
+    margin-bottom: v.$spacing-xl;
+    padding-bottom: v.$spacing-lg;
+    border-bottom: 1px solid v.$color-border;
+  }
+
+  &__tags {
+    display: flex;
+    gap: v.$spacing-sm;
+    flex-wrap: wrap;
+    margin-bottom: v.$spacing-sm;
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: v.$color-surface-2;
+    color: v.$color-text-muted;
+    border: 1px solid v.$color-border;
+
+    mat-icon { font-size: 12px; width: 12px; height: 12px; }
+
+    &--pinned { background: rgba(v.$color-warning, 0.1); color: v.$color-warning; border-color: rgba(v.$color-warning, 0.3); }
+    &--locked { background: rgba(v.$color-danger, 0.1); color: v.$color-danger; border-color: rgba(v.$color-danger, 0.3); }
+  }
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.06em;
+    color: v.$color-text;
+    margin-bottom: v.$spacing-sm;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    gap: v.$spacing-sm;
+    font-size: 0.82rem;
+    color: v.$color-text-muted;
+    flex-wrap: wrap;
+  }
+}
+
+// ─── Posts ────────────────────────────────────────────────────────────────────
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  margin-bottom: v.$spacing-xl;
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    color: v.$color-text-muted;
+    padding: v.$spacing-xl;
+    justify-content: center;
+    mat-icon { color: v.$color-primary; }
+  }
+}
+
+.post {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  background: v.$color-surface;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  overflow: hidden;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    grid-template-columns: 1fr;
+  }
+
+  &--op { border-color: rgba(v.$color-primary, 0.3); }
+
+  &__sidebar {
+    background: v.$color-surface-2;
+    border-right: 1px solid v.$color-border;
+    padding: v.$spacing-md;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: v.$spacing-sm;
+    text-align: center;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      flex-direction: row;
+      border-right: none;
+      border-bottom: 1px solid v.$color-border;
+      padding: v.$spacing-sm v.$spacing-md;
+      text-align: left;
+      gap: v.$spacing-sm;
+    }
+  }
+
+  &__author-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: v.$color-text;
+    word-break: break-word;
+  }
+
+  &__author-stats {
+    font-size: 0.75rem;
+    color: v.$color-text-dim;
+    margin-top: auto;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      margin-top: 0;
+      margin-left: auto;
+    }
+  }
+
+  &__body { padding: v.$spacing-md; display: flex; flex-direction: column; }
+
+  @media (max-width: #{v.$bp-mobile}) {
+    &__body { padding: v.$spacing-sm v.$spacing-md; }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    margin-bottom: v.$spacing-md;
+    padding-bottom: v.$spacing-sm;
+    border-bottom: 1px solid v.$color-border;
+  }
+
+  &__date { font-size: 0.78rem; color: v.$color-text-dim; }
+
+  &__op-badge {
+    background: rgba(v.$color-primary, 0.15);
+    color: v.$color-primary;
+    border: 1px solid rgba(v.$color-primary, 0.3);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.08em;
+  }
+
+  &__edited { font-size: 0.75rem; color: v.$color-text-dim; margin-left: auto; }
+
+  &__content {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: v.$color-text;
+    white-space: pre-wrap;
+  }
+}
+
+// ─── Reply form ───────────────────────────────────────────────────────────────
+.reply-form {
+  background: v.$color-surface;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-lg;
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    margin-bottom: v.$spacing-md;
+    color: v.$color-text;
+  }
+
+  &__field { width: 100%; }
+
+  &__submit {
+    background: v.$color-primary !important;
+    color: #fff !important;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: v.$spacing-sm;
+
+    &[disabled] { opacity: 0.6; }
+  }
+
+  &__login-prompt {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    background: v.$color-surface;
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-lg;
+    padding: v.$spacing-lg;
+    color: v.$color-text-muted;
+    font-size: 0.9rem;
+
+    a { color: v.$color-primary-light; }
+    mat-icon { color: v.$color-text-dim; }
+  }
+}
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

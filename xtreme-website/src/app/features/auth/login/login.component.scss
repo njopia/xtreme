@@ -1,0 +1,103 @@
+@use '../../../../styles/variables' as v;
+
+.login {
+  width: 100%;
+
+  &__card {
+    background: v.$color-surface;
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-lg;
+    padding: v.$spacing-2xl v.$spacing-xl;
+    box-shadow: v.$shadow-lg;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      padding: v.$spacing-xl v.$spacing-md;
+      border-radius: v.$radius-md;
+    }
+  }
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: v.$color-text;
+    letter-spacing: 0.08em;
+    margin-bottom: v.$spacing-xs;
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: v.$color-text-muted;
+    margin-bottom: v.$spacing-xl;
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    background: rgba(v.$color-danger, 0.1);
+    border: 1px solid rgba(v.$color-danger, 0.3);
+    border-radius: v.$radius-md;
+    padding: v.$spacing-sm v.$spacing-md;
+    color: v.$color-danger;
+    font-size: 0.9rem;
+    margin-bottom: v.$spacing-lg;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: v.$spacing-sm;
+  }
+
+  &__field {
+    width: 100%;
+  }
+
+  &__submit {
+    width: 100%;
+    height: 48px;
+    background: v.$color-primary !important;
+    color: #fff !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.1em !important;
+    margin-top: v.$spacing-sm;
+    box-shadow: v.$shadow-red !important;
+    transition: background v.$transition-fast !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: v.$spacing-sm;
+
+    &:hover:not([disabled]) { background: v.$color-primary-light !important; }
+    &[disabled] { opacity: 0.6; }
+
+    mat-spinner { --mdc-circular-progress-active-indicator-color: #fff; }
+  }
+
+  &__hint {
+    margin-top: v.$spacing-md;
+    font-size: 0.78rem;
+    color: v.$color-text-dim;
+    text-align: center;
+
+    code {
+      background: v.$color-surface-2;
+      padding: 1px 6px;
+      border-radius: v.$radius-sm;
+      color: v.$color-accent-light;
+    }
+  }
+
+  &__footer {
+    margin-top: v.$spacing-lg;
+    text-align: center;
+    font-size: 0.88rem;
+    color: v.$color-text-muted;
+
+    a { color: v.$color-primary-light; font-weight: 600; }
+  }
+}

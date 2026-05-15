@@ -1,0 +1,232 @@
+@use '../../../../styles/variables' as v;
+
+.sidebar {
+  position: fixed;
+  top: v.$navbar-height;
+  left: 0;
+  bottom: 0;
+  width: v.$sidebar-width;
+  background: v.$color-surface;
+  border-right: 1px solid v.$color-border;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform v.$transition-base, width v.$transition-base;
+  z-index: 90;
+
+  &--closed {
+    transform: translateX(-100%);
+  }
+
+  &--collapsed {
+    @media (min-width: 768px) {
+      width: v.$sidebar-width-collapsed;
+
+      .sidebar__section-title {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .sidebar__server {
+        justify-content: center;
+        padding: v.$spacing-sm 0;
+      }
+
+      .sidebar__collapse-btn {
+        justify-content: center;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+
+  @media (max-width: #{v.$bp-mobile}) {
+    width: min(v.$sidebar-width, 85vw);
+    box-shadow: v.$shadow-lg;
+  }
+
+  &__section {
+    padding: v.$spacing-md v.$spacing-sm v.$spacing-sm;
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: 0 v.$spacing-sm v.$spacing-sm;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: v.$color-text-muted;
+    text-transform: uppercase;
+    transition: justify-content v.$transition-base, padding v.$transition-base;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; flex-shrink: 0; }
+  }
+
+  &__divider {
+    height: 1px;
+    background: v.$color-border;
+    margin: 0 v.$spacing-md;
+  }
+
+  &__server {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: v.$spacing-sm v.$spacing-sm;
+    border-radius: v.$radius-md;
+    margin-bottom: 2px;
+    cursor: default;
+    transition: padding v.$transition-base;
+
+    &:hover { background: v.$color-surface-2; }
+  }
+
+  &__server-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: v.$color-text-dim;
+    flex-shrink: 0;
+
+    &--online { background: v.$color-online; box-shadow: 0 0 6px rgba(v.$color-online, 0.6); }
+  }
+
+  &__server-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__server-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: v.$color-text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__server-map {
+    font-size: 0.72rem;
+    color: v.$color-text-muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__server-count {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: v.$color-accent-light;
+    flex-shrink: 0;
+  }
+
+  &__nav-list {
+    padding: 0 !important;
+
+    .active-link {
+      background: rgba(v.$color-primary, 0.1) !important;
+      color: v.$color-primary !important;
+
+      mat-icon { color: v.$color-primary; }
+    }
+  }
+
+  &__nav-item {
+    border-radius: v.$radius-md !important;
+    margin-bottom: 2px;
+    color: v.$color-text-muted;
+    font-size: 0.9rem;
+
+    &:hover { background: v.$color-surface-2 !important; }
+  }
+
+  // Icon-only nav items shown in collapsed rail mode
+  &__nav-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 40px;
+    color: v.$color-text-muted;
+    text-decoration: none;
+    border-radius: v.$radius-md;
+    transition: background v.$transition-fast, color v.$transition-fast;
+
+    mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+    &:hover { background: v.$color-surface-2; color: v.$color-text; }
+
+    &.active-link { background: rgba(v.$color-primary, 0.1); color: v.$color-primary; }
+  }
+
+  &__chat-link {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: v.$spacing-sm v.$spacing-md;
+    border-radius: v.$radius-md;
+    color: v.$color-text-muted;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background v.$transition-fast, color v.$transition-fast;
+    text-decoration: none;
+
+    &:hover { background: v.$color-surface-2; color: v.$color-text; }
+    &.active-link { background: rgba(v.$color-primary, 0.1); color: v.$color-primary; }
+
+    mat-icon { font-size: 20px; width: 20px; height: 20px; }
+  }
+
+  &__badge {
+    margin-left: auto;
+    background: v.$color-primary;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  // Sticky collapse toggle button — desktop only
+  &__collapse-btn {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    width: 100%;
+    padding: v.$spacing-sm v.$spacing-md;
+    background: v.$color-surface;
+    border: none;
+    border-top: 1px solid v.$color-border;
+    color: v.$color-text-dim;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background v.$transition-fast, color v.$transition-fast, padding v.$transition-base;
+    z-index: 1;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; }
+
+    &:hover { background: v.$color-surface-2; color: v.$color-text-muted; }
+
+    @media (max-width: #{v.$bp-mobile}) {
+      display: none;
+    }
+  }
+}

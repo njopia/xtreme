@@ -1,0 +1,48 @@
+@use '../../../styles/variables' as v;
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.shell__body {
+  display: flex;
+  padding-top: v.$navbar-height;
+  min-height: 100%;
+}
+
+.shell__backdrop {
+  display: none;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    display: block;
+    position: fixed;
+    inset: v.$navbar-height 0 0 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 89;
+    cursor: pointer;
+  }
+}
+
+.shell__content {
+  flex: 1;
+  margin-left: v.$sidebar-width;
+  min-height: calc(100vh - #{v.$navbar-height});
+  transition: margin-left v.$transition-base;
+  background: v.$color-bg;
+  min-width: 0;
+
+  &--expanded {
+    margin-left: 0;
+  }
+
+  &--collapsed {
+    @media (min-width: 768px) {
+      margin-left: v.$sidebar-width-collapsed;
+    }
+  }
+
+  @media (max-width: #{v.$bp-mobile}) {
+    margin-left: 0 !important;
+  }
+}

@@ -1,0 +1,26 @@
+@use '../../../../styles/variables' as v;
+
+.role-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+
+  &__icon {
+    font-size: 0.75rem !important;
+    width: 0.75rem;
+    height: 0.75rem;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  &--guest     { background: rgba(v.$role-guest, 0.15);     color: v.$role-guest;     border: 1px solid rgba(v.$role-guest, 0.3); }
+  &--player    { background: rgba(v.$role-player, 0.15);    color: v.$role-player;    border: 1px solid rgba(v.$role-player, 0.3); }
+  &--vip       { background: rgba(v.$role-vip, 0.15);       color: v.$role-vip;       border: 1px solid rgba(v.$role-vip, 0.3); }
+  &--moderator { background: rgba(v.$role-moderator, 0.15); color: v.$role-moderator; border: 1px solid rgba(v.$role-moderator, 0.3); }
+  &--admin     { background: rgba(v.$role-admin, 0.2);      color: v.$role-admin;     border: 1px solid rgba(v.$role-admin, 0.4); }
+}

@@ -1,0 +1,68 @@
+<mat-toolbar class="navbar">
+  <button mat-icon-button class="navbar__menu-btn" (click)="menuToggle.emit()" aria-label="Menú">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a routerLink="/" class="navbar__brand">
+    <span class="navbar__logo">XTREME</span>
+    <span class="navbar__subtitle">L4D2</span>
+  </a>
+
+  <nav class="navbar__nav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="navbar__link">
+      <mat-icon>home</mat-icon>
+      <span>Inicio</span>
+    </a>
+    <a routerLink="/forums" routerLinkActive="active" class="navbar__link">
+      <mat-icon>forum</mat-icon>
+      <span>Foros</span>
+    </a>
+    <a routerLink="/chat" routerLinkActive="active" class="navbar__link">
+      <mat-icon>chat</mat-icon>
+      <span>Chat</span>
+    </a>
+  </nav>
+
+  <span class="spacer"></span>
+
+  @if (auth.currentUser(); as user) {
+    <button mat-icon-button class="navbar__icon-btn" aria-label="Notificaciones">
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <button mat-button class="navbar__user-btn" [matMenuTriggerFor]="userMenu">
+      <app-user-avatar [user]="user" size="sm" />
+      <span class="navbar__username">{{ user.username }}</span>
+      <mat-icon class="navbar__user-chevron">arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu" class="navbar__dropdown">
+      <div class="navbar__menu-header">
+        <app-user-avatar [user]="user" size="md" />
+        <div class="navbar__menu-info">
+          <span class="navbar__menu-name">{{ user.username }}</span>
+          <app-role-badge [role]="user.role" />
+        </div>
+      </div>
+      <mat-divider />
+      @if (auth.isAdmin()) {
+        <button mat-menu-item routerLink="/admin">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Panel Admin</span>
+        </button>
+      }
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span>Mi perfil</span>
+      </button>
+      <mat-divider />
+      <button mat-menu-item class="navbar__logout" (click)="auth.logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Salir</span>
+      </button>
+    </mat-menu>
+  } @else {
+    <a mat-button routerLink="/auth/login" class="navbar__login-btn">Iniciar sesión</a>
+    <a mat-raised-button routerLink="/auth/register" class="navbar__register-btn">Registrarse</a>
+  }
+</mat-toolbar>

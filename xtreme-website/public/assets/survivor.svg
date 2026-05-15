@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 580" fill="none">
+  <!-- Flashlight beam -->
+  <path d="M50,210 L-60,100 L-60,320Z" fill="rgba(255,210,120,0.06)"/>
+  <path d="M50,210 L-30,130 L-30,290Z" fill="rgba(255,210,120,0.04)"/>
+
+  <!-- Shadow/ground -->
+  <ellipse cx="160" cy="560" rx="90" ry="14" fill="rgba(0,0,0,0.5)"/>
+
+  <!-- Back leg -->
+  <path d="M148,370 L134,490 L134,510 L152,510 L158,420 Z" fill="#111111"/>
+  <!-- Boot back -->
+  <path d="M128,500 L128,516 L156,516 L156,500Z" rx="4" fill="#1a1a1a"/>
+
+  <!-- Front leg -->
+  <path d="M168,370 L178,490 L178,510 L196,510 L192,420 Z" fill="#151515"/>
+  <!-- Boot front -->
+  <path d="M172,500 L172,516 L200,516 L200,500Z" rx="4" fill="#1a1a1a"/>
+
+  <!-- Torso -->
+  <path d="M128,180 L118,375 L200,375 L190,180Z" fill="#111111"/>
+
+  <!-- Jacket detail -->
+  <path d="M159,180 L155,375 L163,375Z" fill="#1a1a1a" opacity="0.5"/>
+
+  <!-- Back arm (holding flashlight toward viewer left) -->
+  <path d="M128,200 L72,230 L62,216 L118,190Z" fill="#111111"/>
+  <!-- Flashlight in hand -->
+  <rect x="38" y="208" width="30" height="11" rx="3" fill="#222"/>
+  <ellipse cx="38" cy="213" rx="5" ry="7" fill="#333"/>
+  <!-- Light lens glow -->
+  <ellipse cx="35" cy="213" rx="4" ry="6" fill="rgba(255,220,100,0.4)"/>
+
+  <!-- Front arm (down/relaxed) -->
+  <path d="M190,195 L218,290 L204,294 L178,200Z" fill="#151515"/>
+  <!-- Hand -->
+  <ellipse cx="210" cy="297" rx="9" ry="10" fill="#111111"/>
+
+  <!-- Neck -->
+  <rect x="152" y="148" width="24" height="36" rx="8" fill="#111111"/>
+
+  <!-- Head -->
+  <ellipse cx="164" cy="118" rx="34" ry="38" fill="#111111"/>
+
+  <!-- Cap brim -->
+  <path d="M134,100 Q164,88 194,100 L192,108 Q164,96 136,108Z" fill="#0a0a0a"/>
+  <path d="M194,100 L210,104 L208,112 L192,108Z" fill="#0a0a0a"/>
+
+  <!-- Hair/neck details -->
+  <path d="M136,128 Q130,140 132,155 L152,150 Q148,138 148,128Z" fill="#0d0d0d"/>
+
+  <!-- Subtle highlight on head -->
+  <ellipse cx="175" cy="105" rx="10" ry="12" fill="rgba(255,255,255,0.03)"/>
+
+  <!-- Gear on back (backpack hint) -->
+  <path d="M130,195 L118,290 L132,293 L142,230 L138,198Z" fill="#0d0d0d"/>
+  <rect x="118" y="220" width="16" height="22" rx="3" fill="#161616"/>
+</svg>

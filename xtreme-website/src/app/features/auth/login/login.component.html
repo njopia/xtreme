@@ -1,0 +1,55 @@
+<div class="login">
+  <div class="login__card">
+    <h1 class="login__title">Iniciar sesión</h1>
+    <p class="login__subtitle">Accede a la comunidad Xtreme L4D2</p>
+
+    @if (error()) {
+      <div class="login__error">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ error() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login__form">
+      <mat-form-field appearance="outline" class="login__field">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="email" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (form.get('email')?.hasError('required') && form.get('email')?.touched) {
+          <mat-error>El correo es requerido</mat-error>
+        } @else if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>Correo inválido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="login__field">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="showPassword() ? 'text' : 'password'" formControlName="password" autocomplete="current-password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix type="button" (click)="showPassword.set(!showPassword())">
+          <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('required') && form.get('password')?.touched) {
+          <mat-error>La contraseña es requerida</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-raised-button class="login__submit" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          <mat-spinner diameter="20" />
+        } @else {
+          <span class="btn-inner"><mat-icon>login</mat-icon> Entrar</span>
+        }
+      </button>
+    </form>
+
+    <p class="login__hint">
+      Demo: <code>admin&#64;xtreme.gg</code> / cualquier contraseña de 6+ caracteres
+    </p>
+
+    <div class="login__footer">
+      ¿No tienes cuenta?
+      <a routerLink="/auth/register">Regístrate aquí</a>
+    </div>
+  </div>
+</div>

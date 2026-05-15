@@ -1,0 +1,64 @@
+<div class="register">
+  <div class="register__card">
+    <h1 class="register__title">Crear cuenta</h1>
+    <p class="register__subtitle">Únete a la comunidad Xtreme L4D2</p>
+
+    @if (error()) {
+      <div class="register__error">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ error() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="register__form">
+      <mat-form-field appearance="outline" class="register__field">
+        <mat-label>Nombre de usuario</mat-label>
+        <input matInput formControlName="username" autocomplete="username" />
+        <mat-icon matPrefix>person</mat-icon>
+        @if (form.get('username')?.hasError('minlength') && form.get('username')?.touched) {
+          <mat-error>Mínimo 3 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register__field">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" formControlName="email" autocomplete="email" />
+        <mat-icon matPrefix>email</mat-icon>
+        @if (form.get('email')?.hasError('email') && form.get('email')?.touched) {
+          <mat-error>Correo inválido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register__field">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="showPassword() ? 'text' : 'password'" formControlName="password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix type="button" (click)="showPassword.set(!showPassword())">
+          <mat-icon>{{ showPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        @if (form.get('password')?.hasError('minlength') && form.get('password')?.touched) {
+          <mat-error>Mínimo 6 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="register__field">
+        <mat-label>Steam ID (opcional)</mat-label>
+        <input matInput formControlName="steamId" placeholder="STEAM_0:1:XXXXXXXX" />
+        <mat-icon matPrefix>sports_esports</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button class="register__submit" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          <mat-spinner diameter="20" />
+        } @else {
+          <span class="btn-inner"><mat-icon>person_add</mat-icon> Registrarse</span>
+        }
+      </button>
+    </form>
+
+    <div class="register__footer">
+      ¿Ya tienes cuenta?
+      <a routerLink="/auth/login">Inicia sesión</a>
+    </div>
+  </div>
+</div>

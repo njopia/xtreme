@@ -1,0 +1,81 @@
+@use '../../../../styles/variables' as v;
+
+.user-mgmt {
+  &__toolbar {
+    display: flex;
+    gap: v.$spacing-md;
+    margin-bottom: v.$spacing-lg;
+    flex-wrap: wrap;
+  }
+
+  &__search { flex: 1; min-width: 160px; }
+  &__filter { width: 160px; }
+
+  &__table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    color: v.$color-text-muted;
+    padding: v.$spacing-xl;
+    justify-content: center;
+    mat-icon { color: v.$color-primary; }
+  }
+
+  &__table {
+    width: 100%;
+    min-width: 600px;
+    background: v.$color-surface !important;
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-lg;
+    overflow: hidden;
+
+    th { font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: v.$color-text-muted; }
+    td { font-size: 0.88rem; color: v.$color-text; border-bottom-color: v.$color-border !important; }
+
+    tr:last-child td { border-bottom: none !important; }
+  }
+
+  &__row--banned td { opacity: 0.55; }
+
+  &__user-cell {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: v.$spacing-sm 0;
+  }
+
+  &__username { font-weight: 700; font-size: 0.9rem; }
+  &__email { font-size: 0.75rem; color: v.$color-text-muted; }
+
+  &__status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    &--online  { background: rgba(v.$color-online, 0.15);  color: v.$color-online;  border: 1px solid rgba(v.$color-online, 0.3); }
+    &--offline { background: rgba(v.$color-text-dim, 0.1); color: v.$color-text-dim; border: 1px solid v.$color-border; }
+    &--banned  { background: rgba(v.$color-danger, 0.15);  color: v.$color-danger;  border: 1px solid rgba(v.$color-danger, 0.3); }
+  }
+
+  &__action-btn { color: v.$color-text-muted; }
+  &__unban { color: v.$color-success !important; }
+
+  &__count {
+    text-align: right;
+    font-size: 0.78rem;
+    color: v.$color-text-dim;
+    margin-top: v.$spacing-sm;
+  }
+}
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

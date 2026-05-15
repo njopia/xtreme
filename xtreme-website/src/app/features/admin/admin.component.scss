@@ -1,0 +1,46 @@
+@use '../../../styles/variables' as v;
+
+.admin {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: v.$spacing-xl;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    padding: v.$spacing-md;
+  }
+
+  &__header {
+    margin-bottom: v.$spacing-xl;
+    padding-bottom: v.$spacing-md;
+    border-bottom: 1px solid v.$color-border;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      margin-bottom: v.$spacing-lg;
+    }
+  }
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.08em;
+    color: v.$color-text;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 1.8rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: v.$color-text-muted;
+    margin-top: 4px;
+  }
+
+  &__tabs {
+    background: transparent !important;
+  }
+
+  &__tab-content {
+    padding-top: v.$spacing-lg;
+  }
+}

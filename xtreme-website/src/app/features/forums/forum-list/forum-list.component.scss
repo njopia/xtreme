@@ -1,0 +1,194 @@
+@use '../../../../styles/variables' as v;
+
+.forum-list {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: v.$spacing-xl;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    padding: v.$spacing-md;
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: v.$spacing-xl;
+    padding-bottom: v.$spacing-md;
+    border-bottom: 1px solid v.$color-border;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: v.$spacing-sm;
+      margin-bottom: v.$spacing-lg;
+    }
+  }
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.08em;
+    color: v.$color-text;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 1.8rem;
+    }
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: v.$color-text-muted;
+    margin-top: 2px;
+  }
+
+  &__new-btn {
+    background: v.$color-primary !important;
+    color: #fff !important;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    color: v.$color-text-muted;
+    padding: v.$spacing-xl;
+    justify-content: center;
+
+    mat-icon { color: v.$color-primary; }
+  }
+}
+
+.categories { display: flex; flex-direction: column; gap: v.$spacing-sm; }
+
+.category-card {
+  display: grid;
+  grid-template-columns: 52px 1fr auto auto;
+  align-items: center;
+  gap: v.$spacing-md;
+  background: v.$color-surface;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-md v.$spacing-lg;
+  transition: border-color v.$transition-fast;
+
+  &:hover { border-color: v.$color-border-light; }
+
+  @media (max-width: #{v.$bp-mobile}) {
+    grid-template-columns: 44px 1fr;
+    .category-card__stats,
+    .category-card__last { display: none; }
+  }
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(v.$color-primary, 0.1);
+    border: 1px solid rgba(v.$color-primary, 0.2);
+    border-radius: v.$radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon { color: v.$color-primary; font-size: 22px; width: 22px; height: 22px; }
+  }
+
+  &__body { min-width: 0; }
+
+  &__name {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.05em;
+    color: v.$color-text;
+    text-decoration: none;
+    margin-bottom: 2px;
+    transition: color v.$transition-fast;
+
+    &:hover { color: v.$color-primary; }
+  }
+
+  &__desc {
+    font-size: 0.83rem;
+    color: v.$color-text-muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__stats {
+    display: flex;
+    gap: v.$spacing-lg;
+    text-align: center;
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: v.$color-text;
+    line-height: 1;
+  }
+
+  &__stat-label {
+    font-size: 0.7rem;
+    color: v.$color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__last {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    min-width: 200px;
+    max-width: 240px;
+
+    mat-icon { color: v.$color-text-dim; font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; }
+  }
+
+  &__last-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__last-title {
+    font-size: 0.82rem;
+    color: v.$color-text;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+
+    &:hover { color: v.$color-primary; }
+  }
+
+  &__last-meta {
+    font-size: 0.75rem;
+    color: v.$color-text-dim;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

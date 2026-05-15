@@ -1,0 +1,98 @@
+<div class="user-mgmt">
+  <div class="user-mgmt__toolbar">
+    <mat-form-field appearance="outline" class="user-mgmt__search">
+      <mat-label>Buscar usuario</mat-label>
+      <input matInput [formControl]="searchControl" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="user-mgmt__filter">
+      <mat-label>Rol</mat-label>
+      <mat-select [formControl]="roleFilter">
+        @for (role of roles; track role.value) {
+          <mat-option [value]="role.value">{{ role.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (loading()) {
+    <div class="user-mgmt__loading"><mat-icon class="spin">sync</mat-icon> Cargando usuarios...</div>
+  } @else {
+    <div class="user-mgmt__table-wrapper">
+    <table mat-table [dataSource]="filteredUsers()" class="user-mgmt__table">
+
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef>Usuario</th>
+        <td mat-cell *matCellDef="let user">
+          <div class="user-mgmt__user-cell">
+            <app-user-avatar [user]="user" size="sm" />
+            <div>
+              <div class="user-mgmt__username">{{ user.username }}</div>
+              <div class="user-mgmt__email">{{ user.email }}</div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Rol</th>
+        <td mat-cell *matCellDef="let user">
+          <app-role-badge [role]="user.role" />
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="posts">
+        <th mat-header-cell *matHeaderCellDef>Posts</th>
+        <td mat-cell *matCellDef="let user">{{ user.postCount }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="joined">
+        <th mat-header-cell *matHeaderCellDef>Registro</th>
+        <td mat-cell *matCellDef="let user">{{ formatDate(user.joinedAt) }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let user">
+          @if (user.isBanned) {
+            <span class="user-mgmt__status user-mgmt__status--banned">Baneado</span>
+          } @else if (user.isOnline) {
+            <span class="user-mgmt__status user-mgmt__status--online">En línea</span>
+          } @else {
+            <span class="user-mgmt__status user-mgmt__status--offline">Offline</span>
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button [matMenuTriggerFor]="actionMenu" class="user-mgmt__action-btn">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #actionMenu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="roleMenu">
+              <mat-icon>manage_accounts</mat-icon> Cambiar rol
+            </button>
+            <mat-menu #roleMenu="matMenu">
+              @for (role of roleOptions; track role.value) {
+                <button mat-menu-item (click)="setRole(user, role.value)">{{ role.label }}</button>
+              }
+            </mat-menu>
+            <button mat-menu-item (click)="toggleBan(user)" [class.user-mgmt__unban]="user.isBanned">
+              <mat-icon>{{ user.isBanned ? 'lock_open' : 'block' }}</mat-icon>
+              {{ user.isBanned ? 'Desbanear' : 'Banear' }}
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.user-mgmt__row--banned]="row.isBanned"></tr>
+    </table>
+    </div>
+
+    <div class="user-mgmt__count">{{ filteredUsers().length }} usuarios</div>
+  }
+</div>
