@@ -62,7 +62,7 @@
     letter-spacing: 0.06em;
 
     &--online  { background: rgba(v.$color-online, 0.15);  color: v.$color-online;  border: 1px solid rgba(v.$color-online, 0.3); }
-    &--offline { background: rgba(v.$color-text-dim, 0.1); color: v.$color-text-dim; border: 1px solid v.$color-border; }
+    &--offline { background: var(--xt-surface-2); color: v.$color-text-dim; border: 1px solid v.$color-border; }
     &--banned  { background: rgba(v.$color-danger, 0.15);  color: v.$color-danger;  border: 1px solid rgba(v.$color-danger, 0.3); }
   }
 

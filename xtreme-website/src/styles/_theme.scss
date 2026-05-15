@@ -1,6 +1,62 @@
 @use '@angular/material' as mat;
 @use 'variables' as v;
 
+// ─── Shared token overrides (applied after mat.theme in both dark and light) ──
+@mixin xtreme-tokens {
+  --mat-app-background-color:          #{v.$color-bg};
+  --mat-sys-background:                #{v.$color-bg};
+  --mat-sys-surface:                   #{v.$color-surface};
+  --mat-sys-surface-variant:           #{v.$color-surface-2};
+  --mat-sys-surface-container:         #{v.$color-surface-2};
+  --mat-sys-surface-container-low:     #{v.$color-surface};
+  --mat-sys-surface-container-high:    #{v.$color-surface-3};
+  --mat-sys-surface-container-highest: #{v.$color-surface-3};
+
+  --mat-sys-primary:             #{v.$color-primary};
+  --mat-sys-on-primary:          #ffffff;
+  --mat-sys-primary-container:   #{v.$color-primary-dark};
+  --mat-sys-on-primary-container: #ffffff;
+
+  --mat-sys-tertiary:            #{v.$color-accent};
+  --mat-sys-on-tertiary:         #ffffff;
+
+  --mat-sys-on-background:       #{v.$color-text};
+  --mat-sys-on-surface:          #{v.$color-text};
+  --mat-sys-on-surface-variant:  #{v.$color-text-muted};
+
+  --mat-sys-outline:             #{v.$color-border};
+  --mat-sys-outline-variant:     #{v.$color-border-light};
+
+  --mat-sys-error:               #{v.$color-danger};
+  --mat-sys-on-error:            #ffffff;
+
+  // Toolbar
+  --mat-toolbar-container-background-color: #{v.$color-surface};
+  --mat-toolbar-standard-height:            #{v.$navbar-height};
+
+  // Menu
+  --mat-menu-container-color:          #{v.$color-surface-2};
+  --mat-menu-item-label-text-color:    #{v.$color-text};
+
+  // Form fields
+  --mdc-outlined-text-field-outline-color:        #{v.$color-border};
+  --mdc-outlined-text-field-hover-outline-color:  #{v.$color-primary};
+  --mdc-outlined-text-field-focus-outline-color:  #{v.$color-primary};
+  --mdc-outlined-text-field-label-text-color:     #{v.$color-text-muted};
+  --mdc-outlined-text-field-input-text-color:     #{v.$color-text};
+  --mdc-outlined-text-field-container-color:      #{v.$color-surface-2};
+
+  // Tabs
+  --mat-tab-header-active-indicator-color:   #{v.$color-primary};
+  --mat-tab-header-active-label-text-color:  #{v.$color-primary};
+
+  // Table
+  --mat-table-background-color:           #{v.$color-surface};
+  --mat-table-row-item-label-text-color:  #{v.$color-text};
+  --mat-table-header-headline-color:      #{v.$color-text-muted};
+}
+
+// ─── Dark theme (default) ─────────────────────────────────────────────────────
 html {
   @include mat.theme((
     color: (
@@ -17,59 +73,19 @@ html {
     ),
     density: 0,
   ));
+
+  @include xtreme-tokens;
 }
 
-// ─── Override Material CSS tokens with L4D2 palette ───────────────────────────
-:root {
-  --mat-app-background-color:          #{v.$color-bg};
-  --mat-sys-background:                #{v.$color-bg};
-  --mat-sys-surface:                   #{v.$color-surface};
-  --mat-sys-surface-variant:           #{v.$color-surface-2};
-  --mat-sys-surface-container:         #{v.$color-surface-2};
-  --mat-sys-surface-container-low:     #{v.$color-surface};
-  --mat-sys-surface-container-high:    #{v.$color-surface-3};
-  --mat-sys-surface-container-highest: #{v.$color-surface-3};
+// ─── Light theme ──────────────────────────────────────────────────────────────
+html.theme-light {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: mat.$red-palette,
+      tertiary: mat.$green-palette,
+    ),
+  ));
 
-  --mat-sys-primary:            #{v.$color-primary};
-  --mat-sys-on-primary:         #ffffff;
-  --mat-sys-primary-container:  #{v.$color-primary-dark};
-  --mat-sys-on-primary-container: #ffffff;
-
-  --mat-sys-tertiary:           #{v.$color-accent};
-  --mat-sys-on-tertiary:        #ffffff;
-
-  --mat-sys-on-background:      #{v.$color-text};
-  --mat-sys-on-surface:         #{v.$color-text};
-  --mat-sys-on-surface-variant: #{v.$color-text-muted};
-
-  --mat-sys-outline:            #{v.$color-border};
-  --mat-sys-outline-variant:    #{v.$color-border-light};
-
-  --mat-sys-error:              #{v.$color-danger};
-  --mat-sys-on-error:           #ffffff;
-
-  // Toolbar
-  --mat-toolbar-container-background-color: #{v.$color-surface};
-  --mat-toolbar-standard-height:            #{v.$navbar-height};
-
-  // Menu
-  --mat-menu-container-color: #{v.$color-surface-2};
-  --mat-menu-item-label-text-color: #{v.$color-text};
-
-  // Form fields
-  --mdc-outlined-text-field-outline-color:              #{v.$color-border};
-  --mdc-outlined-text-field-hover-outline-color:        #{v.$color-primary};
-  --mdc-outlined-text-field-focus-outline-color:        #{v.$color-primary};
-  --mdc-outlined-text-field-label-text-color:           #{v.$color-text-muted};
-  --mdc-outlined-text-field-input-text-color:           #{v.$color-text};
-  --mdc-outlined-text-field-container-color:            #{v.$color-surface-2};
-
-  // Tabs
-  --mat-tab-header-active-indicator-color: #{v.$color-primary};
-  --mat-tab-header-active-label-text-color: #{v.$color-primary};
-
-  // Table
-  --mat-table-background-color: #{v.$color-surface};
-  --mat-table-row-item-label-text-color: #{v.$color-text};
-  --mat-table-header-headline-color: #{v.$color-text-muted};
+  @include xtreme-tokens;
 }
