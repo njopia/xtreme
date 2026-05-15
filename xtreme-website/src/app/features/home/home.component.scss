@@ -1,0 +1,418 @@
+@use '../../../styles/variables' as v;
+
+.home { background: v.$color-bg; }
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+.hero {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: v.$spacing-2xl v.$spacing-xl;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    min-height: 380px;
+    padding: v.$spacing-xl v.$spacing-md;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 50%, rgba(v.$color-primary-dark, 0.3) 0%, transparent 65%),
+      radial-gradient(ellipse at 10% 80%, rgba(v.$color-primary, 0.1) 0%, transparent 50%),
+      linear-gradient(180deg, v.$color-bg 0%, rgba(v.$color-surface, 0.5) 100%);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(255, 255, 255, 0.01) 2px, rgba(255, 255, 255, 0.01) 4px
+      );
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+  }
+
+  &__eyebrow {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: v.$color-primary;
+    margin-bottom: v.$spacing-sm;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 0.7rem;
+    }
+  }
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem;
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    color: v.$color-text;
+    margin-bottom: v.$spacing-lg;
+
+    @media (max-width: #{v.$bp-tablet}) {
+      font-size: 4.5rem;
+    }
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 3.5rem;
+      margin-bottom: v.$spacing-md;
+    }
+
+    &--red {
+      color: v.$color-primary;
+      text-shadow: 0 0 40px rgba(v.$color-primary, 0.5);
+    }
+  }
+
+  &__description {
+    font-size: 1.1rem;
+    color: v.$color-text-muted;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: v.$spacing-xl;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 0.95rem;
+      margin-bottom: v.$spacing-lg;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: v.$spacing-md;
+    flex-wrap: wrap;
+
+    @media (max-width: 380px) {
+      flex-direction: column;
+    }
+  }
+
+  &__btn-primary {
+    background: v.$color-primary !important;
+    color: #fff !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.1em !important;
+    padding: 0 v.$spacing-xl !important;
+    height: 48px;
+    box-shadow: v.$shadow-red !important;
+    gap: v.$spacing-sm;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      height: 42px;
+      font-size: 1rem !important;
+      padding: 0 v.$spacing-lg !important;
+    }
+  }
+
+  &__btn-secondary {
+    border-color: v.$color-border-light !important;
+    color: v.$color-text !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.1rem !important;
+    letter-spacing: 0.1em !important;
+    height: 48px;
+    gap: v.$spacing-sm;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      height: 42px;
+      font-size: 1rem !important;
+    }
+  }
+
+  &__illustration {
+    position: absolute;
+    right: 8%;
+    bottom: 0;
+    height: 92%;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+
+    @media (max-width: #{v.$bp-tablet}) {
+      right: 2%;
+      opacity: 0.5;
+    }
+
+    @media (max-width: #{v.$bp-mobile}) {
+      display: none;
+    }
+  }
+
+  &__survivor {
+    height: 100%;
+    max-height: 480px;
+    width: auto;
+    opacity: 0.85;
+    filter: drop-shadow(-8px 0 32px rgba(v.$color-primary, 0.25));
+  }
+
+  &__scroll-indicator {
+    position: absolute;
+    bottom: v.$spacing-lg;
+    left: 50%;
+    transform: translateX(-50%);
+    color: v.$color-text-dim;
+    animation: bounce 2s infinite;
+    z-index: 2;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      display: none;
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+// ─── Stats ────────────────────────────────────────────────────────────────────
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: v.$color-border;
+  border-top: 1px solid v.$color-border;
+  border-bottom: 1px solid v.$color-border;
+
+  @media (max-width: #{v.$bp-tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 380px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-xl v.$spacing-lg;
+  background: v.$color-surface;
+  text-align: center;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    padding: v.$spacing-lg v.$spacing-md;
+  }
+
+  &__icon { color: v.$color-primary; font-size: 28px; width: 28px; height: 28px; }
+  &__value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: v.$color-text;
+    line-height: 1;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 1.6rem;
+    }
+  }
+  &__label {
+    font-size: 0.8rem;
+    color: v.$color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// ─── Grid ─────────────────────────────────────────────────────────────────────
+.home__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$spacing-xl;
+  padding: v.$spacing-xl;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @media (max-width: #{v.$bp-tablet}) {
+    grid-template-columns: 1fr;
+    gap: v.$spacing-lg;
+  }
+
+  @media (max-width: #{v.$bp-mobile}) {
+    padding: v.$spacing-md;
+    gap: v.$spacing-md;
+  }
+}
+
+// ─── Section ──────────────────────────────────────────────────────────────────
+.section {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: v.$spacing-md;
+    padding-bottom: v.$spacing-sm;
+    border-bottom: 1px solid v.$color-border;
+  }
+
+  &__title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.08em;
+    color: v.$color-text;
+  }
+
+  &__badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 10px;
+
+    &--online { background: rgba(v.$color-online, 0.15); color: v.$color-online; border: 1px solid rgba(v.$color-online, 0.3); }
+  }
+
+  &__link { font-size: 0.85rem; color: v.$color-primary-light; font-weight: 600; }
+}
+
+// ─── Servers ──────────────────────────────────────────────────────────────────
+.servers { display: flex; flex-direction: column; gap: v.$spacing-md; }
+
+.server-card {
+  background: v.$color-surface;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-md;
+  transition: border-color v.$transition-fast;
+
+  &:hover { border-color: v.$color-border-light; }
+  &--online { border-left: 3px solid v.$color-online; }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    margin-bottom: v.$spacing-sm;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: v.$color-text-dim;
+    flex-shrink: 0;
+
+    &--online { background: v.$color-online; box-shadow: 0 0 6px rgba(v.$color-online, 0.5); }
+  }
+
+  &__name { font-weight: 700; font-size: 1rem; flex: 1; }
+  &__status { font-size: 0.75rem; color: v.$color-online; font-weight: 600; }
+
+  &__info {
+    display: flex;
+    gap: v.$spacing-lg;
+    margin-bottom: v.$spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    color: v.$color-text-muted;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+
+  &__bar {
+    height: 4px;
+    background: v.$color-surface-3;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: v.$spacing-sm;
+  }
+
+  &__bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, v.$color-accent, v.$color-accent-light);
+    border-radius: 2px;
+    transition: width v.$transition-slow;
+  }
+
+  &__ip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: v.$color-text-dim;
+
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+    code { font-size: 0.78rem; color: v.$color-text-muted; }
+  }
+}
+
+// ─── Threads ──────────────────────────────────────────────────────────────────
+.threads { display: flex; flex-direction: column; gap: v.$spacing-sm; }
+
+.thread-card {
+  display: block;
+  background: v.$color-surface;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-md;
+  text-decoration: none;
+  transition: border-color v.$transition-fast, background v.$transition-fast;
+
+  &:hover { border-color: v.$color-primary; background: v.$color-surface-2; }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    margin-bottom: v.$spacing-sm;
+    flex-wrap: wrap;
+  }
+
+  &__author { font-size: 0.82rem; font-weight: 600; color: v.$color-text-muted; }
+  &__time { font-size: 0.78rem; color: v.$color-text-dim; margin-left: auto; }
+
+  &__title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: v.$color-text;
+    margin-bottom: v.$spacing-sm;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__pin { font-size: 14px; width: 14px; height: 14px; color: v.$color-primary; }
+
+  &__stats {
+    display: flex;
+    gap: v.$spacing-md;
+    font-size: 0.78rem;
+    color: v.$color-text-dim;
+
+    span { display: flex; align-items: center; gap: 3px; }
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+  }
+}

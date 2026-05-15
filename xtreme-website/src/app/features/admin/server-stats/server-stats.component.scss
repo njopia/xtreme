@@ -1,0 +1,119 @@
+@use '../../../../styles/variables' as v;
+
+.server-stats {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: v.$spacing-lg;
+    margin-bottom: v.$spacing-xl;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__note {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    font-size: 0.82rem;
+    color: v.$color-text-dim;
+    padding: v.$spacing-md;
+    background: v.$color-surface;
+    border: 1px solid v.$color-border;
+    border-radius: v.$radius-md;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+}
+
+.server-card {
+  background: v.$color-surface;
+  border: 1px solid v.$color-border;
+  border-radius: v.$radius-lg;
+  padding: v.$spacing-lg;
+
+  &--online { border-left: 3px solid v.$color-online; }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    margin-bottom: v.$spacing-lg;
+  }
+
+  &__status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: v.$color-text-dim;
+    flex-shrink: 0;
+
+    &--online { background: v.$color-online; box-shadow: 0 0 8px rgba(v.$color-online, 0.6); }
+  }
+
+  &__name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.06em;
+    flex: 1;
+  }
+
+  &__status-label { font-size: 0.78rem; font-weight: 700; color: v.$color-online; }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: v.$spacing-md;
+    margin-bottom: v.$spacing-md;
+  }
+
+  &__stat {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    background: v.$color-surface-2;
+    border-radius: v.$radius-md;
+    padding: v.$spacing-sm v.$spacing-md;
+
+    mat-icon { color: v.$color-primary; font-size: 20px; width: 20px; height: 20px; flex-shrink: 0; }
+
+    div { display: flex; flex-direction: column; gap: 1px; }
+  }
+
+  &__stat-value { font-weight: 700; font-size: 0.95rem; color: v.$color-text; }
+  &__stat-label { font-size: 0.72rem; color: v.$color-text-muted; }
+
+  &__occupancy {
+    margin-bottom: v.$spacing-sm;
+  }
+
+  &__occupancy-bar {
+    height: 6px;
+    background: v.$color-surface-3;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  &__occupancy-fill {
+    height: 100%;
+    background: linear-gradient(90deg, v.$color-accent, v.$color-accent-light);
+    border-radius: 3px;
+    transition: width v.$transition-slow;
+  }
+
+  &__occupancy-pct { font-size: 0.75rem; color: v.$color-text-muted; }
+
+  &__ip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: v.$color-text-dim;
+    margin-top: v.$spacing-sm;
+
+    mat-icon { font-size: 14px; width: 14px; height: 14px; }
+    code { color: v.$color-text-muted; font-size: 0.78rem; }
+  }
+}

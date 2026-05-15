@@ -1,0 +1,244 @@
+@use '../../../styles/variables' as v;
+
+.chat {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  height: calc(100vh - #{v.$navbar-height});
+
+  @media (max-width: #{v.$bp-mobile}) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  // ─── Channels ───────────────────────────────────────────────────────────────
+  &__channels {
+    background: v.$color-surface;
+    border-right: 1px solid v.$color-border;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      border-right: none;
+      border-bottom: 1px solid v.$color-border;
+      flex-direction: row;
+      overflow-y: hidden;
+      overflow-x: auto;
+      scrollbar-width: none;
+      &::-webkit-scrollbar { display: none; }
+    }
+  }
+
+  &__channels-header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: v.$spacing-md;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: v.$color-text-muted;
+    text-transform: uppercase;
+    border-bottom: 1px solid v.$color-border;
+    flex-shrink: 0;
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+    @media (max-width: #{v.$bp-mobile}) {
+      display: none;
+    }
+  }
+
+  &__channel-item {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: 10px v.$spacing-md;
+    border: none;
+    background: transparent;
+    color: v.$color-text-muted;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background v.$transition-fast, color v.$transition-fast;
+    border-radius: 0;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; }
+
+    &:hover { background: v.$color-surface-2; color: v.$color-text; }
+    &--active { background: rgba(v.$color-primary, 0.1); color: v.$color-primary; }
+
+    @media (max-width: #{v.$bp-mobile}) {
+      width: auto;
+      flex-shrink: 0;
+      padding: v.$spacing-sm v.$spacing-md;
+      border-bottom: 2px solid transparent;
+
+      &--active {
+        background: transparent;
+        border-bottom-color: v.$color-primary;
+        color: v.$color-primary;
+      }
+    }
+  }
+
+  &__channel-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__channel-badge {
+    background: v.$color-primary;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 8px;
+    min-width: 16px;
+    text-align: center;
+  }
+
+  // ─── Main ───────────────────────────────────────────────────────────────────
+  &__main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    padding: v.$spacing-md v.$spacing-lg;
+    background: v.$color-surface;
+    border-bottom: 1px solid v.$color-border;
+    flex-shrink: 0;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      padding: v.$spacing-sm v.$spacing-md;
+    }
+  }
+
+  &__channel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.06em;
+    color: v.$color-text;
+  }
+
+  // ─── Messages ───────────────────────────────────────────────────────────────
+  &__messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: v.$spacing-md v.$spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: v.$spacing-sm;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      padding: v.$spacing-sm v.$spacing-md;
+    }
+  }
+
+  &__empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: v.$color-text-dim;
+    gap: v.$spacing-sm;
+    text-align: center;
+    padding: v.$spacing-2xl;
+
+    mat-icon { font-size: 48px; width: 48px; height: 48px; }
+    p { font-size: 0.9rem; }
+  }
+
+  &__message {
+    padding: v.$spacing-sm v.$spacing-md;
+    border-radius: v.$radius-md;
+    border-left: 3px solid transparent;
+    transition: background v.$transition-fast;
+
+    &:hover { background: v.$color-surface-2; }
+    &--system {
+      border-left-color: v.$color-primary;
+      background: rgba(v.$color-primary, 0.05);
+      font-style: italic;
+    }
+
+    @media (max-width: #{v.$bp-mobile}) {
+      padding: v.$spacing-xs v.$spacing-sm;
+    }
+  }
+
+  &__message-meta {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  &__message-author {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: v.$color-text;
+  }
+
+  &__message-time {
+    font-size: 0.72rem;
+    color: v.$color-text-dim;
+    margin-left: auto;
+  }
+
+  &__message-content {
+    font-size: 0.92rem;
+    color: v.$color-text;
+    line-height: 1.5;
+    padding-left: 2px;
+    word-break: break-word;
+  }
+
+  // ─── Input ──────────────────────────────────────────────────────────────────
+  &__input-area {
+    padding: v.$spacing-md v.$spacing-lg;
+    background: v.$color-surface;
+    border-top: 1px solid v.$color-border;
+    flex-shrink: 0;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      padding: v.$spacing-sm v.$spacing-md;
+    }
+  }
+
+  &__input-field {
+    width: 100%;
+    button[matSuffix] { color: v.$color-primary; }
+  }
+
+  &__input-hint {
+    font-size: 0.72rem;
+    color: v.$color-text-dim;
+    margin-top: -8px;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      display: none;
+    }
+  }
+
+  &__auth-prompt {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    color: v.$color-text-muted;
+    font-size: 0.9rem;
+    padding: v.$spacing-sm 0;
+  }
+}

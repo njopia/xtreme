@@ -1,0 +1,83 @@
+<aside class="sidebar" [class.sidebar--closed]="!isOpen()" [class.sidebar--collapsed]="isCollapsed()">
+
+  <!-- Servers -->
+  <div class="sidebar__section">
+    <div class="sidebar__section-title">
+      <mat-icon>sports_esports</mat-icon>
+      @if (!isCollapsed()) { <span>Servidores</span> }
+    </div>
+    @for (server of servers; track server.name) {
+      <div class="sidebar__server"
+           [matTooltip]="isCollapsed() ? server.name + ' · ' + server.players + '/' + server.maxPlayers : ''"
+           matTooltipPosition="right">
+        <span class="sidebar__server-dot" [class.sidebar__server-dot--online]="server.online"></span>
+        @if (!isCollapsed()) {
+          <div class="sidebar__server-info">
+            <span class="sidebar__server-name">{{ server.name }}</span>
+            <span class="sidebar__server-map">{{ server.map }}</span>
+          </div>
+          <span class="sidebar__server-count">{{ server.players }}/{{ server.maxPlayers }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="sidebar__divider"></div>
+
+  <!-- Forums -->
+  <div class="sidebar__section">
+    <div class="sidebar__section-title">
+      <mat-icon>forum</mat-icon>
+      @if (!isCollapsed()) { <span>Foros</span> }
+    </div>
+
+    @if (isCollapsed()) {
+      <div class="sidebar__nav-icons">
+        @for (cat of categories(); track cat.id) {
+          <a [routerLink]="['/forums', cat.id]" routerLinkActive="active-link"
+             class="sidebar__nav-icon"
+             [matTooltip]="cat.name" matTooltipPosition="right">
+            <mat-icon>{{ cat.icon }}</mat-icon>
+          </a>
+        }
+      </div>
+    } @else {
+      <mat-nav-list class="sidebar__nav-list">
+        @for (cat of categories(); track cat.id) {
+          <a mat-list-item [routerLink]="['/forums', cat.id]" routerLinkActive="active-link" class="sidebar__nav-item">
+            <mat-icon matListItemIcon>{{ cat.icon }}</mat-icon>
+            <span matListItemTitle>{{ cat.name }}</span>
+          </a>
+        }
+      </mat-nav-list>
+    }
+  </div>
+
+  <div class="sidebar__divider"></div>
+
+  <!-- Chat -->
+  <div class="sidebar__section">
+    @if (isCollapsed()) {
+      <a routerLink="/chat" routerLinkActive="active-link"
+         class="sidebar__nav-icon"
+         matTooltip="Chat en vivo" matTooltipPosition="right">
+        <mat-icon>chat</mat-icon>
+      </a>
+    } @else {
+      <a class="sidebar__chat-link" routerLink="/chat" routerLinkActive="active-link">
+        <mat-icon>chat</mat-icon>
+        <span>Chat en vivo</span>
+        <span class="sidebar__badge">3</span>
+      </a>
+    }
+  </div>
+
+  <!-- Collapse toggle — desktop only -->
+  <button class="sidebar__collapse-btn" (click)="collapseToggle.emit()"
+          [matTooltip]="isCollapsed() ? 'Expandir menú' : ''" matTooltipPosition="right"
+          aria-label="Colapsar menú">
+    <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    @if (!isCollapsed()) { <span>Colapsar</span> }
+  </button>
+
+</aside>

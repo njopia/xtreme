@@ -1,0 +1,61 @@
+<div class="server-stats">
+  <div class="server-stats__grid">
+    @for (server of servers; track server.name) {
+      <div class="server-card" [class.server-card--online]="server.online">
+        <div class="server-card__header">
+          <div class="server-card__status-dot" [class.server-card__status-dot--online]="server.online"></div>
+          <h3 class="server-card__name">{{ server.name }}</h3>
+          <span class="server-card__status-label">{{ server.online ? 'En línea' : 'Offline' }}</span>
+        </div>
+
+        <div class="server-card__stats">
+          <div class="server-card__stat">
+            <mat-icon>group</mat-icon>
+            <div>
+              <span class="server-card__stat-value">{{ server.players }} / {{ server.maxPlayers }}</span>
+              <span class="server-card__stat-label">Jugadores</span>
+            </div>
+          </div>
+          <div class="server-card__stat">
+            <mat-icon>map</mat-icon>
+            <div>
+              <span class="server-card__stat-value">{{ server.map }}</span>
+              <span class="server-card__stat-label">Mapa actual</span>
+            </div>
+          </div>
+          <div class="server-card__stat">
+            <mat-icon>timer</mat-icon>
+            <div>
+              <span class="server-card__stat-value">{{ server.uptime }}</span>
+              <span class="server-card__stat-label">Uptime</span>
+            </div>
+          </div>
+          <div class="server-card__stat">
+            <mat-icon>speed</mat-icon>
+            <div>
+              <span class="server-card__stat-value">{{ server.tickrate }} Hz</span>
+              <span class="server-card__stat-label">Tickrate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="server-card__occupancy">
+          <div class="server-card__occupancy-bar">
+            <div class="server-card__occupancy-fill" [style.width.%]="occupancy(server)"></div>
+          </div>
+          <span class="server-card__occupancy-pct">{{ occupancy(server) }}% ocupado</span>
+        </div>
+
+        <div class="server-card__ip">
+          <mat-icon>dns</mat-icon>
+          <code>{{ server.ip }}</code>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="server-stats__note">
+    <mat-icon>info</mat-icon>
+    Los datos se conectarán a la API de Steam una vez configurado el backend.
+  </div>
+</div>

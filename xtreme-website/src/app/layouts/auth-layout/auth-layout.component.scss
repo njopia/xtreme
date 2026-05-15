@@ -1,0 +1,75 @@
+@use '../../../styles/variables' as v;
+
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background: v.$color-bg;
+
+  &__bg {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(v.$color-primary-dark, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(v.$color-primary, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &__header {
+    padding: v.$spacing-xl v.$spacing-lg v.$spacing-lg;
+    z-index: 1;
+
+    @media (max-width: #{v.$bp-mobile}) {
+      padding: v.$spacing-lg v.$spacing-md v.$spacing-md;
+    }
+  }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    gap: 2px;
+  }
+
+  &__logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: v.$color-primary;
+    letter-spacing: 0.15em;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(v.$color-primary, 0.5);
+
+    @media (max-width: #{v.$bp-mobile}) {
+      font-size: 2.2rem;
+    }
+  }
+
+  &__subtitle {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    color: v.$color-text-muted;
+    letter-spacing: 0.3em;
+  }
+
+  &__content {
+    width: 100%;
+    max-width: 440px;
+    padding: 0 v.$spacing-md;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__footer {
+    padding: v.$spacing-lg;
+    font-size: 0.78rem;
+    color: v.$color-text-dim;
+    z-index: 1;
+  }
+}

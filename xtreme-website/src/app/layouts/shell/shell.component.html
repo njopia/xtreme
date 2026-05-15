@@ -1,0 +1,16 @@
+<app-navbar (menuToggle)="toggleSidebar()" />
+
+<div class="shell__body">
+  @if (sidebarOpen()) {
+    <div class="shell__backdrop" (click)="toggleSidebar()"></div>
+  }
+  <app-sidebar
+    [isOpen]="sidebarOpen()"
+    [isCollapsed]="sidebarCollapsed()"
+    (collapseToggle)="toggleCollapse()" />
+  <main class="shell__content"
+        [class.shell__content--expanded]="!sidebarOpen()"
+        [class.shell__content--collapsed]="sidebarCollapsed() && sidebarOpen()">
+    <router-outlet />
+  </main>
+</div>

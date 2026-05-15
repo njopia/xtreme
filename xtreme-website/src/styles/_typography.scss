@@ -1,0 +1,27 @@
+@use 'variables' as v;
+
+$font-display: 'Bebas Neue', 'Impact', sans-serif;
+$font-body:    'Rajdhani', 'Segoe UI', sans-serif;
+
+:root {
+  --font-display: #{$font-display};
+  --font-body:    #{$font-body};
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  letter-spacing: 0.05em;
+  color: v.$color-text;
+}
+
+.display-xl { font-size: 6rem;   font-family: $font-display; line-height: 1;    letter-spacing: 0.04em; }
+.display-lg { font-size: 4rem;   font-family: $font-display; line-height: 1;    letter-spacing: 0.04em; }
+.display-md { font-size: 2.5rem; font-family: $font-display; line-height: 1.1;  letter-spacing: 0.04em; }
+.display-sm { font-size: 1.75rem; font-family: $font-display; line-height: 1.2; letter-spacing: 0.04em; }
+
+.text-muted   { color: v.$color-text-muted; }
+.text-primary { color: v.$color-primary; }
+.text-accent  { color: v.$color-accent; }
+.text-success { color: v.$color-success; }
+.text-warning { color: v.$color-warning; }
+.text-danger  { color: v.$color-danger; }

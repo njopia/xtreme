@@ -1,0 +1,56 @@
+<div class="forum-list">
+  <div class="forum-list__header">
+    <div>
+      <h1 class="forum-list__title">Foros</h1>
+      <p class="forum-list__subtitle">Discusiones de la comunidad Xtreme L4D2</p>
+    </div>
+    <button mat-raised-button class="forum-list__new-btn" routerLink="/forums/new">
+      <mat-icon>add</mat-icon>
+      Nuevo hilo
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="forum-list__loading">
+      <mat-icon class="spin">sync</mat-icon>
+      Cargando categorías...
+    </div>
+  } @else {
+    <div class="categories">
+      @for (cat of categories(); track cat.id) {
+        <div class="category-card">
+          <div class="category-card__icon">
+            <mat-icon>{{ cat.icon }}</mat-icon>
+          </div>
+          <div class="category-card__body">
+            <a [routerLink]="['/forums', cat.id]" class="category-card__name">{{ cat.name }}</a>
+            <p class="category-card__desc">{{ cat.description }}</p>
+          </div>
+          <div class="category-card__stats">
+            <div class="category-card__stat">
+              <span class="category-card__stat-value">{{ cat.threadCount }}</span>
+              <span class="category-card__stat-label">hilos</span>
+            </div>
+            <div class="category-card__stat">
+              <span class="category-card__stat-value">{{ cat.postCount }}</span>
+              <span class="category-card__stat-label">posts</span>
+            </div>
+          </div>
+          @if (cat.lastPost) {
+            <div class="category-card__last">
+              <mat-icon>chat_bubble_outline</mat-icon>
+              <div class="category-card__last-info">
+                <a [routerLink]="['/forums', cat.id, cat.lastPost!.threadId]" class="category-card__last-title">
+                  {{ cat.lastPost!.threadTitle }}
+                </a>
+                <span class="category-card__last-meta">
+                  {{ cat.lastPost!.authorUsername }} · {{ timeAgo(cat.lastPost!.createdAt) }}
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

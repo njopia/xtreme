@@ -1,0 +1,71 @@
+<div class="chat">
+
+  <!-- Channel list -->
+  <aside class="chat__channels">
+    <div class="chat__channels-header">
+      <mat-icon>chat</mat-icon>
+      <span>Canales</span>
+    </div>
+    @for (ch of channels(); track ch.id) {
+      <button class="chat__channel-item" [class.chat__channel-item--active]="activeChannelId() === ch.id" (click)="selectChannel(ch.id)">
+        <mat-icon>{{ ch.icon }}</mat-icon>
+        <span class="chat__channel-name"># {{ ch.name }}</span>
+        @if (ch.unreadCount > 0) {
+          <span class="chat__channel-badge">{{ ch.unreadCount }}</span>
+        }
+      </button>
+    }
+  </aside>
+
+  <!-- Message area -->
+  <div class="chat__main">
+    <div class="chat__header">
+      <mat-icon>tag</mat-icon>
+      <span class="chat__channel-title">{{ activeChannelId() }}</span>
+    </div>
+
+    <div class="chat__messages" #messageList>
+      @if (activeMessages().length === 0) {
+        <div class="chat__empty">
+          <mat-icon>chat_bubble_outline</mat-icon>
+          <p>Sin mensajes en este canal. ¡Sé el primero!</p>
+        </div>
+      }
+      @for (msg of activeMessages(); track msg.id) {
+        <div class="chat__message" [class.chat__message--system]="msg.isSystem">
+          <div class="chat__message-meta">
+            <app-role-badge [role]="msg.authorRole" />
+            <span class="chat__message-author">{{ msg.authorUsername }}</span>
+            <span class="chat__message-time">{{ formatTime(msg.createdAt) }}</span>
+          </div>
+          <div class="chat__message-content">{{ msg.content }}</div>
+        </div>
+      }
+    </div>
+
+    <!-- Input -->
+    <div class="chat__input-area">
+      @if (auth.isAuthenticated()) {
+        <mat-form-field appearance="outline" class="chat__input-field">
+          <input
+            matInput
+            [formControl]="messageInput"
+            [placeholder]="'Mensaje en #' + activeChannelId()"
+            (keydown)="onKeydown($event)"
+            autocomplete="off"
+          />
+          <button mat-icon-button matSuffix (click)="send()" [disabled]="messageInput.invalid">
+            <mat-icon>send</mat-icon>
+          </button>
+        </mat-form-field>
+        <p class="chat__input-hint">Enter para enviar · Shift+Enter para nueva línea</p>
+      } @else {
+        <div class="chat__auth-prompt">
+          <mat-icon>lock</mat-icon>
+          <span>Inicia sesión para chatear</span>
+        </div>
+      }
+    </div>
+  </div>
+
+</div>

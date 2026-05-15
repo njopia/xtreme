@@ -1,0 +1,80 @@
+<div class="forum-thread">
+  <div class="forum-thread__breadcrumb">
+    <a routerLink="/forums">Foros</a>
+    <mat-icon>chevron_right</mat-icon>
+    @if (thread()) {
+      <a [routerLink]="['/forums', thread()!.categoryId]">{{ thread()!.categoryId | titlecase }}</a>
+      <mat-icon>chevron_right</mat-icon>
+      <span>{{ thread()!.title }}</span>
+    }
+  </div>
+
+  @if (thread(); as t) {
+    <div class="forum-thread__title-row">
+      <div>
+        <div class="forum-thread__tags">
+          @if (t.isPinned) { <span class="forum-thread__tag forum-thread__tag--pinned"><mat-icon>push_pin</mat-icon> Fijado</span> }
+          @if (t.isLocked) { <span class="forum-thread__tag forum-thread__tag--locked"><mat-icon>lock</mat-icon> Cerrado</span> }
+          @for (tag of t.tags; track tag) {
+            <span class="forum-thread__tag">{{ tag }}</span>
+          }
+        </div>
+        <h1 class="forum-thread__title">{{ t.title }}</h1>
+        <div class="forum-thread__meta">
+          <span>{{ t.replyCount }} respuestas</span>
+          <span>·</span>
+          <span>{{ t.viewCount }} vistas</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="posts">
+    @if (loading()) {
+      <div class="posts__loading"><mat-icon class="spin">sync</mat-icon> Cargando...</div>
+    } @else {
+      @for (post of posts(); track post.id; let i = $index) {
+        <div class="post" [class.post--op]="i === 0">
+          <div class="post__sidebar">
+            <div class="post__author-name">{{ post.authorUsername }}</div>
+            <app-role-badge [role]="post.authorRole" />
+            <div class="post__author-stats">
+              <span>Posts: {{ post.authorPostCount }}</span>
+            </div>
+          </div>
+          <div class="post__body">
+            <div class="post__header">
+              <span class="post__date">{{ formatDate(post.createdAt) }}</span>
+              @if (i === 0) { <span class="post__op-badge">OP</span> }
+              @if (post.isEdited) { <span class="post__edited">(editado)</span> }
+            </div>
+            <div class="post__content">{{ post.content }}</div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Reply form -->
+  @if (auth.isAuthenticated() && !thread()?.isLocked) {
+    <div class="reply-form">
+      <h3 class="reply-form__title">Responder</h3>
+      <mat-form-field appearance="outline" class="reply-form__field">
+        <mat-label>Tu respuesta...</mat-label>
+        <textarea matInput [formControl]="replyControl" rows="4" [disabled]="submitting()"></textarea>
+        @if (replyControl.hasError('minlength') && replyControl.touched) {
+          <mat-error>Mínimo 5 caracteres</mat-error>
+        }
+      </mat-form-field>
+      <button mat-raised-button class="reply-form__submit" (click)="submitReply()" [disabled]="replyControl.invalid || submitting()">
+        <mat-icon>send</mat-icon>
+        {{ submitting() ? 'Enviando...' : 'Publicar respuesta' }}
+      </button>
+    </div>
+  } @else if (!auth.isAuthenticated()) {
+    <div class="reply-form__login-prompt">
+      <mat-icon>lock</mat-icon>
+      <span>Debes <a routerLink="/auth/login">iniciar sesión</a> para responder.</span>
+    </div>
+  }
+</div>
