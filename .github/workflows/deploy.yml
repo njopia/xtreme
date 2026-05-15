@@ -49,7 +49,7 @@ jobs:
       - name: Smoke test
         run: |
           sleep 3
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.VDS_HOST }})
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://${{ secrets.VDS_HOST }})
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
             echo "Smoke test failed — status $STATUS"
