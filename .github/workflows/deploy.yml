@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'xtreme-website/**'
+      - 'api/**'
 
   workflow_dispatch:
 
@@ -39,12 +40,27 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p ${{ secrets.VDS_PORT }} ${{ secrets.VDS_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Deploy via rsync
+      - name: Deploy frontend via rsync
         run: |
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             xtreme-website/dist/xtreme-website/browser/ \
             ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:${{ secrets.VDS_PATH }}/
+
+      - name: Deploy API via rsync
+        run: |
+          rsync -az --delete \
+            --exclude='.env' \
+            --exclude='node_modules' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
+            api/ \
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:${{ secrets.VDS_API_PATH }}/
+
+      - name: Install API deps & restart
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} \
+            "cd ${{ secrets.VDS_API_PATH }} && npm ci --omit=dev && pm2 restart xtreme-api || pm2 start ecosystem.config.cjs"
 
       - name: Smoke test
         run: |
