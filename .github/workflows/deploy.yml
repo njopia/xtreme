@@ -32,13 +32,6 @@ jobs:
       - name: Install rsync
         run: sudo apt-get install -y rsync
 
-      - name: Debug - List Build Files
-        run: |
-          echo "--- Contenido del build del Frontend ---"
-          ls -R xtreme-website/dist/xtreme-website/browser/ | head -n 20
-          echo "--- Contenido de la carpeta API ---"
-          ls -R api/ | head -n 20
-
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
@@ -46,41 +39,52 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p ${{ secrets.VDS_PORT }} ${{ secrets.VDS_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Create remote directories
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} \
+            "mkdir -p /var/www/html/xtreme-website /var/www/html/xtreme-api"
+
       - name: Deploy frontend via rsync
         run: |
-          TARGET_PATH="/var/www/html/xtreme-website"
-          rsync -azv --delete \
+          rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             xtreme-website/dist/xtreme-website/browser/ \
-            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:$TARGET_PATH/
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:/var/www/html/xtreme-website/
 
       - name: Deploy API via rsync
         run: |
-          TARGET_API_PATH="/var/www/html/api"
-          if [ -z "$TARGET_API_PATH" ] || [ "$TARGET_API_PATH" == "/" ]; then
-            echo "CRITICAL ERROR: Destino no válido. Abortando."
-            exit 1
-          fi
-          rsync -azvi --delete \
+          rsync -az --delete \
             --exclude='.env' \
             --exclude='node_modules' \
-            --exclude='/proc' \
-            --exclude='/sys' \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             api/ \
-            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:$TARGET_API_PATH/
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:/var/www/html/xtreme-api/
 
-      - name: Debug - Remote Check
+      - name: Setup Node.js & PM2 + restart API
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
-            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} \
-            "ls -ld /var/www/html/api /var/www/html/xtreme-website && du -sh /var/www/html/api"
+            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} << 'EOF'
+            # Instalar Node.js 20 si no existe
+            if ! command -v node &> /dev/null; then
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+              sudo apt-get install -y nodejs
+            fi
 
-      - name: Install API deps & restart
-        run: |
-          ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
-            ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} \
-            "cd /var/www/html/api && npm ci --omit=dev && pm2 restart xtreme-api || pm2 start ecosystem.config.cjs"
+            # Instalar PM2 si no existe
+            if ! command -v pm2 &> /dev/null; then
+              npm install -g pm2
+              pm2 startup systemd -u deploy --hp /home/deploy | tail -1 | sudo bash
+            fi
+
+            # Instalar dependencias
+            cd /var/www/html/xtreme-api
+            npm ci --omit=dev
+
+            # Reiniciar o iniciar por primera vez
+            pm2 restart xtreme-api 2>/dev/null || pm2 start ecosystem.config.cjs
+            pm2 save
+          EOF
 
       - name: Smoke test
         run: |
