@@ -1,7 +1,9 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import  GameDig from 'gamedig';
+import GameDig from 'gamedig';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -66,6 +68,59 @@ async function queryOne(cfg) {
   }
 }
 
+// Swagger
+const swaggerSpec = swaggerJsdoc({
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Xtreme API',
+      version: '1.0.0',
+      description: 'API para consultar estado de servidores L4D2',
+    },
+  },
+  apis: ['./server.js'],
+});
+
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @swagger
+ * /servers:
+ *   get:
+ *     summary: Estado de los servidores L4D2
+ *     description: Retorna el estado actual de todos los servidores activos con caché de 30s
+ *     responses:
+ *       200:
+ *         description: Lista de servidores
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     example: sv1
+ *                   online:
+ *                     type: boolean
+ *                   name:
+ *                     type: string
+ *                   map:
+ *                     type: string
+ *                   players:
+ *                     type: integer
+ *                   maxPlayers:
+ *                     type: integer
+ *                   ping:
+ *                     type: integer
+ *                   ip:
+ *                     type: string
+ *                   port:
+ *                     type: integer
+ *                   version:
+ *                     type: string
+ */
 app.get('/servers', async (_req, res) => {
   const now = Date.now();
   if (_cache && now - _cacheAt < CACHE_TTL) return res.json(_cache);
@@ -75,6 +130,27 @@ app.get('/servers', async (_req, res) => {
   res.json(_cache);
 });
 
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check
+ *     description: Verifica que la API esté corriendo
+ *     responses:
+ *       200:
+ *         description: API online
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                   example: true
+ *                 uptime:
+ *                   type: number
+ *                   example: 123.45
+ */
 app.get('/health', (_req, res) => res.json({ ok: true, uptime: process.uptime() }));
 
 app.listen(PORT, () => console.log(`[xtreme-api] running on :${PORT}`));
