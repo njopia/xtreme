@@ -57,6 +57,7 @@ jobs:
           rsync -az --delete \
             --exclude='.env' \
             --exclude='node_modules' \
+            --exclude='.package-hash' \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             api/ \
             ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:/var/www/html/xtreme-api/
@@ -85,7 +86,17 @@ jobs:
             echo "PM2: $(pm2 -v)"
 
             cd /var/www/html/xtreme-api
-            npm ci --omit=dev
+
+            OLD_HASH=$(cat .package-hash 2>/dev/null || echo "none")
+            NEW_HASH=$(md5sum package.json | cut -d' ' -f1)
+
+            if [ "$OLD_HASH" != "$NEW_HASH" ]; then
+              echo "package.json cambió — reinstalando dependencias..."
+              npm ci --omit=dev
+              echo $NEW_HASH > .package-hash
+            else
+              echo "package.json sin cambios — saltando npm ci"
+            fi
 
             pm2 restart xtreme-api 2>/dev/null || pm2 start ecosystem.config.cjs
             pm2 save
