@@ -81,7 +81,7 @@ const swaggerSpec = swaggerJsdoc({
   apis: ['./server.js'],
 });
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /**
  * @swagger
