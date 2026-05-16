@@ -12,6 +12,6 @@ import { ThemeService } from './core/services/theme.service';
 export class App {
   constructor() {
     inject(ThemeService);
-    console.log('App component initialized.');
+    console.log('App component initialized 2.');
   }
 }
