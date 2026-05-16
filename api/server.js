@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import { GameDig } from 'gamedig';
+import  GameDig from 'gamedig';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
