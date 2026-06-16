@@ -57,6 +57,7 @@ jobs:
           rsync -az --delete \
             --exclude='.env' \
             --exclude='node_modules' \
+            --exclude='.package-hash' \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes" \
             api/ \
             ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }}:/var/www/html/xtreme-api/
@@ -65,26 +66,38 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.VDS_PORT }} -o StrictHostKeyChecking=yes \
             ${{ secrets.VDS_USER }}@${{ secrets.VDS_HOST }} << 'EOF'
-            # Instalar Node.js 20 si no existe
+            export PATH="/usr/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+
             if ! command -v node &> /dev/null; then
               curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
               sudo apt-get install -y nodejs
+              export PATH="/usr/bin:/usr/local/bin:/usr/local/sbin:$PATH"
             fi
 
-            # Recargar PATH
-            export PATH="/usr/bin:/usr/local/bin:$PATH"
+            echo "Node: $(node -v)"
+            echo "NPM: $(npm -v)"
 
-            # Instalar PM2 si no existe
             if ! command -v pm2 &> /dev/null; then
               npm install -g pm2
               pm2 startup systemd -u deploy --hp /home/deploy | tail -1 | sudo bash
+              export PATH="/usr/bin:/usr/local/bin:/usr/local/sbin:$PATH"
             fi
 
-            # Instalar dependencias API
-            cd /var/www/html/xtreme-api
-            npm ci --omit=dev
+            echo "PM2: $(pm2 -v)"
 
-            # Reiniciar o iniciar por primera vez
+            cd /var/www/html/xtreme-api
+
+            OLD_HASH=$(cat .package-hash 2>/dev/null || echo "none")
+            NEW_HASH=$(md5sum package.json | cut -d' ' -f1)
+
+            if [ "$OLD_HASH" != "$NEW_HASH" ]; then
+              echo "package.json cambió — reinstalando dependencias..."
+              npm ci --omit=dev
+              echo $NEW_HASH > .package-hash
+            else
+              echo "package.json sin cambios — saltando npm ci"
+            fi
+
             pm2 restart xtreme-api 2>/dev/null || pm2 start ecosystem.config.cjs
             pm2 save
           EOF
