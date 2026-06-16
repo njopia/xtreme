@@ -10,22 +10,18 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: process.env.ALLOWED_ORIGIN || '*' }));
 
-const SERVERS = [
-  {
-    id: 'sv1',
-    name: process.env.SERVER1_NAME || 'Servidor 1',
-    host: process.env.SERVER1_HOST || '127.0.0.1',
-    port: parseInt(process.env.SERVER1_PORT || '27015'),
-    displayIp: process.env.SERVER1_DISPLAY_IP || null,
-  },
-  {
-    id: 'sv2',
-    name: process.env.SERVER2_NAME || 'Servidor 2',
-    host: process.env.SERVER2_HOST || '127.0.0.1',
-    port: parseInt(process.env.SERVER2_PORT || '27016'),
-    displayIp: process.env.SERVER2_DISPLAY_IP || null,
-  },
-].filter((_, i) => process.env[`SERVER${i + 1}_HOST`] !== 'disabled');
+// Carga dinámica de servidores para facilitar la escalabilidad (ej: SERVER1, SERVER2, SERVER3...)
+const SERVERS = [];
+for (let i = 1; process.env[`SERVER${i}_HOST`]; i++) {
+  if (process.env[`SERVER${i}_HOST`] === 'disabled') continue;
+  SERVERS.push({
+    id: `sv${i}`,
+    name: process.env[`SERVER${i}_NAME`] || `Servidor ${i}`,
+    host: process.env[`SERVER${i}_HOST`],
+    port: parseInt(process.env[`SERVER${i}_PORT`] || '27015'),
+    displayIp: process.env[`SERVER${i}_DISPLAY_IP`] || null,
+  });
+}
 
 let _cache = null;
 let _cacheAt = 0;
@@ -52,7 +48,8 @@ async function queryOne(cfg) {
       port: cfg.port,
       version: s.raw?.version ?? null,
     };
-  } catch {
+  } catch (err) {
+    console.error(`[query-error] ${cfg.id} (${cfg.host}:${cfg.port}):`, err.message);
     return {
       id: cfg.id,
       online: false,
