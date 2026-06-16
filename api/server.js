@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import GameDig from 'gamedig';
+import { GameDig } from 'gamedig';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 
@@ -68,7 +68,6 @@ async function queryOne(cfg) {
   }
 }
 
-// Swagger
 const swaggerSpec = swaggerJsdoc({
   definition: {
     openapi: '3.0.0',
@@ -81,7 +80,9 @@ const swaggerSpec = swaggerJsdoc({
   apis: ['./server.js'],
 });
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Swagger en / (Express recibe la ruta sin /api/ gracias al proxy)
+app.use('/', swaggerUi.serve);
+app.get('/', swaggerUi.setup(swaggerSpec));
 
 /**
  * @swagger
@@ -101,7 +102,6 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
  *                 properties:
  *                   id:
  *                     type: string
- *                     example: sv1
  *                   online:
  *                     type: boolean
  *                   name:
@@ -146,10 +146,8 @@ app.get('/servers', async (_req, res) => {
  *               properties:
  *                 ok:
  *                   type: boolean
- *                   example: true
  *                 uptime:
  *                   type: number
- *                   example: 123.45
  */
 app.get('/health', (_req, res) => res.json({ ok: true, uptime: process.uptime() }));
 
