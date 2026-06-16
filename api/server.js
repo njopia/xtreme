@@ -80,9 +80,7 @@ const swaggerSpec = swaggerJsdoc({
   apis: ['./server.js'],
 });
 
-// Swagger en / (Express recibe la ruta sin /api/ gracias al proxy)
-app.use('/', swaggerUi.serve);
-app.get('/', swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /**
  * @swagger
